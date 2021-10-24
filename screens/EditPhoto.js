@@ -8,7 +8,9 @@ import styles from "../assets/styles/styles";
 class EditPhoto extends React.Component {
     constructor(props) {
         super(props);
+        console.log("path immagine: ", props.route.params)
         console.log("path immagine: ", props.route.params.imgPath)
+        console.log("id immagine: ", props.route.params.photo_id)
 
         this.imgWidth = Dimensions.get('window').width;
         this.imgHeight = Dimensions.get('window').height;
@@ -16,16 +18,17 @@ class EditPhoto extends React.Component {
                 .m-signature-pad--body {border: none;}
                 .m-signature-pad--footer {display: none; margin: 0px;}
                 body,html {
-                width: ${this.imgWidth}px; height: ${this.imgHeight}px;}`;
+                width: ${this.imgWidth}px; height: ${this.imgHeight-100}px;}`;
         this.ref = React.createRef();
         this.state = {
             base64Photo: '',
             colorPen: 'red',
-            photo_id: 0
+            photo_id: this.props.route.params.photo_id ? this.props.route.params.photo_id : 0
         }
+        console.log("id immagine stato: ", this.state.photo_id)
+
         this.colorArray = ['red', 'white', 'black', 'blue', 'green', 'yellow']
     }
-
 
     componentDidMount() {
         this.convertToBase64(this.props.route.params.imgPath)
@@ -33,7 +36,7 @@ class EditPhoto extends React.Component {
 
     convertToBase64 = async (path) => {
         let value = await FileSystem.readAsStringAsync(path, { encoding: 'base64' });
-        console.log("value: ", value)
+        // console.log("value: ", value)
         this.setState({
             base64Photo: value
         })
@@ -43,9 +46,9 @@ class EditPhoto extends React.Component {
         this.ref.current.changePenColor(color)
     }
 
-    handleButtonSizeClick = (color) => () => {
-        this.ref.current.changePenSize(color)
-    }
+    // handleButtonSizeClick = (color) => () => {
+    //     this.ref.current.changePenSize(color)
+    // }
 
     handleUndoButton = () => {
         this.ref.current.undo();
@@ -59,9 +62,19 @@ class EditPhoto extends React.Component {
         this.ref.current.readSignature()
     };
 
+    increasePhotoId = () => {
+        console.log("sto salvando l'id")
+        this.setState({
+            photo_id: this.state.photo_id+1
+        })
+    }
+
     handleOK = (signature) => {
-        console.log("FileSystem.cacheDirectory", FileSystem.cacheDirectory)
-        const path = FileSystem.cacheDirectory + `sign${photo_id}.png`;
+        console.log("=======STO AUMENTANDO L'ID IMMAGINE=======", this.state.photo_id)
+        this.increasePhotoId()
+        console.log("=======HO AUMENTATO L'ID IMMAGINE=======", this.state.photo_id)
+        const path = this.props.route.params.imgPath + `sign${this.state.photo_id}.png`;
+        // const path = this.props.route.params.imgPath + `sign${this.state.photo_id}.png`;
         FileSystem.writeAsStringAsync(
             path,
             signature.replace("data:image/png;base64,", ""),
@@ -69,14 +82,15 @@ class EditPhoto extends React.Component {
         )
             .then(() => FileSystem.getInfoAsync(path))
             .then(console.log("path prima di inviare: ", path))
-            .then(this.goBackToGallery(path))
+            .then(this.goBackToGallery(path, this.state.photo_id))
             .catch(console.error);
     };
 
-    goBackToGallery = (uriPhoto) => {
+    goBackToGallery = (uriPhoto, photo_id) => {
         console.log("Foto modificata che sto passando: ", uriPhoto)
         this.props.navigation.navigate('Main', {
-            modifiedImagePath: uriPhoto
+            modifiedImagePath: uriPhoto,
+            photo_id: photo_id
         })
     }
 
@@ -92,12 +106,12 @@ class EditPhoto extends React.Component {
                     webStyle={this.style}
                     penColor={this.state.colorPen}
                     clearText="Clear"
-                //onOK={handleOK}
                 />
                 <View style={{
                     flex: 0.2,
                     flexDirection: 'row',
-                    margin: 1
+                    marginTop: 10,
+                    justifyContent: 'center'
                 }}>
                     {
                         this.colorArray.map((item, index) => {
@@ -107,19 +121,9 @@ class EditPhoto extends React.Component {
                                     key={index}
                                     value={item}
 
-                                    style={{
-                                        width: 30,
-                                        height: 30,
-                                        // flex: 1,
-                                        // alignSelf: 'flex-end',
-                                        // alignItems: 'center',
-                                        flexDirection: "row",
-                                        flexWrap: "wrap",
-                                        padding: 10,
-                                        marginRight: 5,
-                                        borderRadius: 100,
+                                    style={[styles.colorButtons, {
                                         backgroundColor: item
-                                    }}>
+                                    }]}>
                                 </TouchableOpacity>
                             )
                         })

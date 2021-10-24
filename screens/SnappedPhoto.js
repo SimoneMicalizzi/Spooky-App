@@ -1,13 +1,15 @@
 import React from "react"
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, TouchableOpacity, Image } from 'react-native'
 import styles from '../assets/styles/styles.js';
 import { Dimensions } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SnappedPhoto = (props) => {
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-    
+
     console.log("props: ", props)
 
     const handleSave = (value) => {
@@ -32,7 +34,7 @@ const SnappedPhoto = (props) => {
                             handleSave(props.photo)
                         }}
                     >
-                        <Text style={styles.text}>Salva</Text>
+                        <MaterialIcons name="add-to-photos" size={40} color="#ffffff" />
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
@@ -40,7 +42,7 @@ const SnappedPhoto = (props) => {
                             handleDelete()
                         }}
                     >
-                        <Text style={styles.text}>Elimina</Text>
+                        <FontAwesome5 name="trash" size={40} color="#ffffff" />
                     </TouchableOpacity>
                 </View>
             </View>

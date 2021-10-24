@@ -22,8 +22,8 @@ class ModalDelete extends React.Component {
                 transparent={true}
                 visible={this.props.modalDeleteVisible}
                 onRequestClose={this.handleCloseModalDelete(!this.props.modalDeleteVisible)}
-                >
-                 {/* onRequestClose={() => {
+            >
+                {/* onRequestClose={() => {
                     setModalDeleteVisible(!modalDeleteVisible);
                     
                 }} */}

@@ -28,11 +28,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     modalView: {
+        // marginTop: 350,
+        // flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
-        alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -52,8 +55,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     genericButton: {
-        // paddingLeft: 20,
-        // paddingRight: 50,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
@@ -67,11 +68,9 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     containerButtons: {
-        flex: 1,
-        position: 'absolute',
-        bottom: 0,
-        display: 'flex',
-        width: 100
+        flex: 2,
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     camera: {
         flex: 1,
@@ -86,26 +85,28 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'flex-end',
         alignItems: 'center',
-        // zIndex: 222
+        marginBottom: 20,
+
     },
-    buttonsEdit:{
-            // flex: 1,
-            // backgroundColor: 'transparent',
-            flexDirection: "row",
-            flexWrap: "wrap",
-            marginLeft: 20,
+    buttonsEdit: {
+        // flex: 1,
+        // backgroundColor: 'transparent',
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginLeft: 20,
     },
     text: {
         fontSize: 18,
         color: 'white',
     },
-    // roundButton1: {
-    //     width: 100,
-    //     height: 100,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     padding: 10,
-    //     borderRadius: 100,
-    // },
+    colorButtons: {
+        width: 30,
+        height: 30,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        padding: 10,
+        marginRight: 5,
+        borderRadius: 100,
+    }
 })
 export default styles;

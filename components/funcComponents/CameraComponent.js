@@ -1,34 +1,26 @@
 import React, { useState, useRef } from "react";
 import { View, Text, Pressable, TouchableOpacity, Image } from 'react-native'
 import { Camera } from 'expo-camera';
-import { AntDesign } from '@expo/vector-icons';
-import SnappedPhoto from '../../../screens/SnappedPhoto'
 import * as MediaLibrary from 'expo-media-library';
-import styles from '../../../assets/styles/styles.js';
+import SnappedPhoto from '../../screens/SnappedPhoto'
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import styles from '../../assets/styles/styles.js';
 
 const CameraComponent = (props) => {
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [snapped, setSnapped] = useState(false)
     const [photo, setPhoto] = useState('')
-    // this.photo = []
+
     const handleCallbackClose = (e) => {
         return props.callbackClose(e)
     }
-
-    const handleCallBackSaved = (e) =>{
+    const handleCallBackSaved = (e) => {
         console.log("e cameracomponent:", e)
         return props.callbackClosedSaving(e)
     }
 
     let camera = useRef(null)
-    //Sistemare bottone chiudi --> Funziona
-    //Aggiungere funzione per scattare la foto --> Funziona
-    //Mostrare a video la foto per chiedere la conferma di salvataggio --> Funziona
-    //Salvare foto in galleria --> Funziona
-    //Eliminare -> ritorna alla fotocamera --> Funziona
-    //Mostrare a video in uno screen separato le foto scattate (local storage o galleria) --> Funziona
-    //Implementare modifiche sulla foto --> Funziona
-    
     //EXTRA: Aggiungere flash EXTRA
     //EXTRA: Aggiungere video 
 
@@ -37,14 +29,11 @@ const CameraComponent = (props) => {
             const options = { quality: 0.2, uri: true, base64: true };
             const { uri, base64 } = await camera.takePictureAsync(options);
             const asset = await MediaLibrary.createAssetAsync(uri); //mi serve solo l'uri
-
-            console.log("prova base", base64)
-            console.log("asset: ", asset)
-            console.log("asset: ", uri)
-            // localStorage.setItem 
+            // console.log("prova base", base64)
+            // console.log("asset: ", asset)
+            // console.log("uri: ", uri)
             setPhoto(uri)
             setSnapped(true)
-            // this.photo.push(tempPhoto)
         }
     };
 
@@ -52,7 +41,6 @@ const CameraComponent = (props) => {
         console.log("sto salvando")
         handleCallBackSaved(e)
         handleCallbackClose(e)
-        // setSnapped(false)
     }
 
     const handleCallBackDeletePhoto = () => {
@@ -86,7 +74,7 @@ const CameraComponent = (props) => {
                                         : Camera.Constants.Type.back
                                 );
                             }}>
-                            <Text style={styles.text}> Flip </Text>
+                            <Ionicons name="camera-reverse-outline" size={40} color="#ffffff" />
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.button}
@@ -94,12 +82,12 @@ const CameraComponent = (props) => {
                                 snap()
                             }}
                         >
-                            <Text style={styles.text}>Snap</Text>
+                            <FontAwesome5 name="circle" size={35} color="#ffffff" />
                         </TouchableOpacity>
                         <Pressable
                             style={styles.button}
                             onPress={handleCallbackClose}>
-                            <AntDesign name="close" size={24} color="#ffffff" />
+                            <FontAwesome5 name="times" size={40} color="#ffffff" />
                         </Pressable>
                     </View>
                 </Camera>
