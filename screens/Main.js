@@ -105,6 +105,8 @@ const Main = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={styles.title}> Spooky Photos </Text>
+            <ScrollView>
+
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
@@ -143,7 +145,6 @@ const Main = (props) => {
 
                 </Modal>
             }
-            <ScrollView>
 
                 {
                     !!tempImages &&
