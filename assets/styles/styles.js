@@ -5,14 +5,6 @@ const styles = StyleSheet.create({
         // flex: 1,
         backgroundColor: '#ffffff'
     },
-    buttonOpenCamera: {
-        // flex: 1,
-        // alignSelf: 'flex-end',
-        // alignItems: 'center',
-    },
-    textOpenCamera:{
-        color: 'black'
-    },
     title: {
         fontFamily: 'SpookyFont',
         fontSize: 60,
@@ -56,11 +48,20 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingRight: 50,
         paddingLeft: 40,
-        borderColor: '#FE5A0E'
+        borderColor: '#FE5A0E',
+        borderRadius: 4,
     },
     genericButton: {
-        paddingLeft: 20,
-        paddingRight: 50
+        // paddingLeft: 20,
+        // paddingRight: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        marginBottom: 10,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: '#FE5A0E',
     },
     buttonContainerLanding: {
         paddingTop: 20,

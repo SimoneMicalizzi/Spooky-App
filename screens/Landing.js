@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { Button, StyleSheet, View, Text, TextInput } from 'react-native';
+import { Pressable, View, Text, TextInput } from 'react-native';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../assets/styles/styles';
@@ -132,9 +132,8 @@ class Landing extends Component {
                 />
 
                 <Text>{this.state.error}</Text>
-
                 <View style={styles.buttonContainerLanding}>
-                    <Button style={styles.genericButton} title="Login" onPress={this.handleLogin} color={'#FE5A0E'} />
+                    <Pressable style={styles.genericButton} onPress={this.handleLogin} color={'#FE5A0E'} ><Text style={styles.text}>Login</Text></Pressable>
                 </View>
             </View>
         );

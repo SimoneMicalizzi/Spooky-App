@@ -113,14 +113,14 @@ const Main = (props) => {
         <View style={styles.container}>
             <Text style={styles.title}> Spooky Photos </Text>
             <TouchableOpacity
-                style={styles.buttonOpenCamera}
+                style={styles.genericButton}
                 onPress={() => {
                     console.log(cameraVisible)
                     setModalVisible(!modalVisible);
                     setCameraVisible(!cameraVisible);
                 }}
             >
-                <Text style={styles.textOpenCamera}> Show Camera </Text>
+                <Text style={styles.text}> 🎃 Take a scary photo 🎃</Text>
             </TouchableOpacity>
             {
                 cameraVisible &&
