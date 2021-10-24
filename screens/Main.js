@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text, TouchableOpacity, Modal, Image, Button } from 'react-native'
-import CameraComponent from "../assets/components/funcComponents/CameraComponent";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from '../assets/styles/styles.js';
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CameraComponent from "../assets/components/funcComponents/CameraComponent";
+import ModalDelete from "../components/classComponents/ModalDelete";
+import styles from '../assets/styles/styles.js';
 
 const Main = (props) => {
     const [cameraVisible, setCameraVisible] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-    const [images, setImages] = useState()
-    const [tempImages, setTempImages] = useState([])
+    const [uriPhotoToDelete, setUriPhotoToDelete] = useState();
+    const [images, setImages] = useState([])
     let arrayToSave = []
 
     // const goBack = () => {
@@ -20,7 +21,7 @@ const Main = (props) => {
         setCameraVisible(param)
         setModalVisible(param);
     }
-    
+
     console.log(props)
 
     const storeData = async (value_key, value_data) => {
@@ -35,6 +36,7 @@ const Main = (props) => {
     }
 
     useEffect(() => {
+        console.log("Parametri route:" ,props.route.params)
         props.route.params !== undefined ? handleSaving(props.route.params.modifiedImagePath) : null
         // if(!props.route.params.modifiedImagePath || props.route.params.modifiedImagePath!==null){
         //     handleSaving(props.route.params.modifiedImagePath)
@@ -45,30 +47,23 @@ const Main = (props) => {
         // importData()
     }, []);
 
-    useEffect(() => {
-        console.log(modalDeleteVisible)
-    }, [modalDeleteVisible])
-
     const handleSaving = (e) => {
         console.log("e passato:", e)
         let currentPhotoObject = { uri: e, base64: "base64DaStampare" }
 
         console.log("Post get data: ", currentPhotoObject)
-        console.log("tempImages: ", tempImages)
-        arrayToSave = tempImages
+        console.log("images: ", images)
+        arrayToSave = images
         console.log("Salvataggio fase 1", arrayToSave)
         arrayToSave.push(currentPhotoObject)
 
         // arrayToSave.push(currentPhotoObject)
         console.log("array da salvare", arrayToSave)
         storeData("photos", arrayToSave)
-        setTempImages(arrayToSave)
+        setImages(arrayToSave)
     }
 
     const editPhoto = (uriPhoto) => {
-        //Deve fare il redirect alla pagina della modifica. Due possibili metodi:
-        //Passare base64 per permettere alla libreria di aprire la foto (possibili problemi per la qualità della foto ma "easy")
-        //Ricavarlo con una funzione find con una callback (più laborioso e dispendioso)
         props.navigation.navigate('EditPhoto', {
             imgPath: uriPhoto
         })
@@ -79,15 +74,26 @@ const Main = (props) => {
             const value = await AsyncStorage.getItem('photos')
             if (value !== null) {
                 console.log("value nel getData: ", value)
-                setTempImages(JSON.parse(value));
+                setImages(JSON.parse(value));
             }
         } catch (e) {
             console.log("errore: ", e)
         }
     }
 
-    const deletePhoto = () => {
-        
+    const handleModalDeleteEvent = (uriPhoto) => {
+        console.log(uriPhoto)
+        setUriPhotoToDelete(uriPhoto)
+        setModalDeleteVisible(!modalDeleteVisible)
+    }
+
+    const deletePhoto = (photoToDelete) => {
+        let temporaryArrayPhotos = []
+        temporaryArrayPhotos = images
+        temporaryArrayPhotos = temporaryArrayPhotos.filter(photo => photo.uri !== photoToDelete)
+        setImages(temporaryArrayPhotos)
+        setModalDeleteVisible(!modalDeleteVisible)
+        // storeData("photos", temporaryArrayPhotos)
     }
 
     // PER VEDERE TUTTO QUELLO CHE HO NELL'ASYNC STORAGE
@@ -105,7 +111,7 @@ const Main = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={styles.title}> Spooky Photos </Text>
-            <ScrollView>
+            {/* <ScrollView> */}
 
             <TouchableOpacity
                 style={styles.button}
@@ -128,7 +134,9 @@ const Main = (props) => {
                         setCameraVisible(!cameraVisible);
                     }}
                 >
-                    <CameraComponent callbackClose={() => handleCameraVisibility(false)} callbackClosedSaving={(e) => handleSaving(e)} />
+                    <CameraComponent
+                        callbackClose={() => handleCameraVisibility(false)}
+                        callbackClosedSaving={(e) => handleSaving(e)} />
                 </Modal>
             }
             {
@@ -137,29 +145,34 @@ const Main = (props) => {
                     animationType="slide"
                     transparent={true}
                     visible={modalDeleteVisible}
-                    onRequestClose={() => {
-                        setModalDeleteVisible(!modalDeleteVisible);
-                    }}>
-                    <Text>Do you want to delete this photo?</Text>
-                    <Button title="Yes" onPress={() => deletePhoto()} />
-
+                    onRequestClose={() => setModalDeleteVisible(!modalDeleteVisible)}
+                >
+                    <View
+                        style={styles.modalView}
+                    >
+                        <Text>Do you want to delete this photo?</Text>
+                        <Button title="Yes" onPress={() => deletePhoto(uriPhotoToDelete)} />
+                    </View>
                 </Modal>
             }
-
+            <ScrollView>
                 {
-                    !!tempImages &&
-                    tempImages.map((item, index) => {
+                    !!images &&
+                    images.map((item, index) => {
                         return (
                             <Pressable
                                 key={index}
                                 style={{ width: 200, height: 200, flex: 1 }}
 
                                 onPress={() => editPhoto(item.uri)}
-                                onLongPress={() => setModalDeleteVisible(!modalVisible)}
+                                // onLongPress={() => setModalDeleteVisible(!modalVisible)}
+                                onLongPress={(e) => handleModalDeleteEvent(item.uri)}
+
                             >
                                 <Image
                                     source={{ uri: item.uri }}
-                                    style={{ width: 200, height: 200, flex: 1, margin: 4 }}
+                                    style={{ width: 200, height: 200, flex: 1, margin: 4, resizeMode: "center",
+                                }}
                                 />
                             </Pressable>
                         )
