@@ -156,16 +156,11 @@ const Main = (props) => {
             }
             {
                 !!images &&
-                <View styles={styles.containerGallery}>
                     <FlatList
                         data={images}
                         renderItem={({ item }) => (
                             <View
-                                style={{
-                                    flex: 1,
-                                    flexDirection: 'column',
-                                    margin: 1
-                                }}>
+                                style={styles.gallery}>
                                 <Pressable
                                     onPress={() => editPhoto(item.uri)}
                                     onLongPress={(e) => handleModalDeleteEvent(item.uri)}
@@ -181,7 +176,6 @@ const Main = (props) => {
                         numColumns={3}
                         keyExtractor={(item, index) => index}
                     />
-                </View>
             }
         </View>
     )

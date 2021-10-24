@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
         color: '#FE5A0E',
         padding: 16,
     },
-    containerGallery: {
+    gallery: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#7cb48f',
+        flexDirection: 'column',
+        margin: 1
     },
     imageThumbnail: {
         justifyContent: 'center',

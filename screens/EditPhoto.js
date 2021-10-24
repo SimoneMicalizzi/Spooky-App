@@ -1,10 +1,7 @@
 import React from "react";
 import { View, ScrollView, Dimensions, TouchableOpacity, Text } from 'react-native'
-
 import SignatureScreen from "react-native-signature-canvas";
-
 import * as FileSystem from 'expo-file-system';
-
 import styles from "../assets/styles/styles";
 
 class EditPhoto extends React.Component {
@@ -94,8 +91,7 @@ class EditPhoto extends React.Component {
                     clearText="Clear"
                 //onOK={handleOK}
                 />
-                <ScrollView>
-
+                <View style={styles.gallery}>
                     {
                         this.colorArray.map((item, index) => {
                             return (
@@ -122,7 +118,7 @@ class EditPhoto extends React.Component {
                     <TouchableOpacity style={styles.buttonContainer} onPress={this.handleRedoButton} ><Text>Redo</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.buttonContainer} onPress={this.handleSaveButton} ><Text>Save</Text></TouchableOpacity>
 
-                </ScrollView>
+                </View>
 
             </View>
         );
