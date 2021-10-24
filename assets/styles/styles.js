@@ -88,6 +88,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // zIndex: 222
     },
+    buttonsEdit:{
+            // flex: 1,
+            // backgroundColor: 'transparent',
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginLeft: 20,
+    },
     text: {
         fontSize: 18,
         color: 'white',

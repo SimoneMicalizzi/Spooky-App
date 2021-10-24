@@ -1,7 +1,8 @@
 import React from "react";
 import { View, ScrollView, Dimensions, TouchableOpacity, Text } from 'react-native'
-import SignatureScreen from "react-native-signature-canvas";
 import * as FileSystem from 'expo-file-system';
+import SignatureScreen from "react-native-signature-canvas";
+import { FontAwesome5 } from '@expo/vector-icons';
 import styles from "../assets/styles/styles";
 
 class EditPhoto extends React.Component {
@@ -19,7 +20,8 @@ class EditPhoto extends React.Component {
         this.ref = React.createRef();
         this.state = {
             base64Photo: '',
-            colorPen: 'red'
+            colorPen: 'red',
+            photo_id: 0
         }
         this.colorArray = ['red', 'white', 'black', 'blue', 'green', 'yellow']
     }
@@ -58,7 +60,8 @@ class EditPhoto extends React.Component {
     };
 
     handleOK = (signature) => {
-        const path = FileSystem.cacheDirectory + "sign.png";
+        console.log("FileSystem.cacheDirectory", FileSystem.cacheDirectory)
+        const path = FileSystem.cacheDirectory + `sign${photo_id}.png`;
         FileSystem.writeAsStringAsync(
             path,
             signature.replace("data:image/png;base64,", ""),
@@ -74,7 +77,7 @@ class EditPhoto extends React.Component {
         console.log("Foto modificata che sto passando: ", uriPhoto)
         this.props.navigation.navigate('Main', {
             modifiedImagePath: uriPhoto
-        })    
+        })
     }
 
     render() {
@@ -91,7 +94,11 @@ class EditPhoto extends React.Component {
                     clearText="Clear"
                 //onOK={handleOK}
                 />
-                <View style={styles.gallery}>
+                <View style={{
+                    flex: 0.2,
+                    flexDirection: 'row',
+                    margin: 1
+                }}>
                     {
                         this.colorArray.map((item, index) => {
                             return (
@@ -104,9 +111,12 @@ class EditPhoto extends React.Component {
                                         width: 30,
                                         height: 30,
                                         // flex: 1,
-                                        alignSelf: 'flex-end',
-                                        alignItems: 'center',
+                                        // alignSelf: 'flex-end',
+                                        // alignItems: 'center',
+                                        flexDirection: "row",
+                                        flexWrap: "wrap",
                                         padding: 10,
+                                        marginRight: 5,
                                         borderRadius: 100,
                                         backgroundColor: item
                                     }}>
@@ -114,9 +124,9 @@ class EditPhoto extends React.Component {
                             )
                         })
                     }
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.handleUndoButton} ><Text>Undo</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.handleRedoButton} ><Text>Redo</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.handleSaveButton} ><Text>Save</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonsEdit} onPress={this.handleUndoButton} ><FontAwesome5 name="undo" size={24} color="black" /></TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonsEdit} onPress={this.handleRedoButton} ><FontAwesome5 name="redo" size={24} color="black" /></TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonsEdit} onPress={this.handleSaveButton} ><FontAwesome5 name="save" size={24} color="black" /></TouchableOpacity>
 
                 </View>
 
