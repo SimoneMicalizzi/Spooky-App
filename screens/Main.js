@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Text, TouchableOpacity, Modal, Image, Button } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Modal, Image, Button, FlatList } from 'react-native'
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CameraComponent from "../assets/components/funcComponents/CameraComponent";
@@ -36,7 +36,7 @@ const Main = (props) => {
     }
 
     useEffect(() => {
-        console.log("Parametri route:" ,props.route.params)
+        console.log("Parametri route:", props.route.params)
         props.route.params !== undefined ? handleSaving(props.route.params.modifiedImagePath) : null
         // if(!props.route.params.modifiedImagePath || props.route.params.modifiedImagePath!==null){
         //     handleSaving(props.route.params.modifiedImagePath)
@@ -60,7 +60,8 @@ const Main = (props) => {
         // arrayToSave.push(currentPhotoObject)
         console.log("array da salvare", arrayToSave)
         storeData("photos", arrayToSave)
-        setImages(arrayToSave)
+        setImages(arrayToSave);
+        getData()
     }
 
     const editPhoto = (uriPhoto) => {
@@ -93,7 +94,7 @@ const Main = (props) => {
         temporaryArrayPhotos = temporaryArrayPhotos.filter(photo => photo.uri !== photoToDelete)
         setImages(temporaryArrayPhotos)
         setModalDeleteVisible(!modalDeleteVisible)
-        // storeData("photos", temporaryArrayPhotos)
+        storeData("photos", temporaryArrayPhotos)
     }
 
     // PER VEDERE TUTTO QUELLO CHE HO NELL'ASYNC STORAGE
@@ -109,19 +110,17 @@ const Main = (props) => {
     // }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <Text style={styles.title}> Spooky Photos </Text>
-            {/* <ScrollView> */}
-
             <TouchableOpacity
-                style={styles.button}
+                style={styles.buttonOpenCamera}
                 onPress={() => {
                     console.log(cameraVisible)
                     setModalVisible(!modalVisible);
                     setCameraVisible(!cameraVisible);
                 }}
             >
-                <Text style={styles.text}> Show Camera </Text>
+                <Text style={styles.textOpenCamera}> Show Camera </Text>
             </TouchableOpacity>
             {
                 cameraVisible &&
@@ -155,32 +154,36 @@ const Main = (props) => {
                     </View>
                 </Modal>
             }
-            <ScrollView>
-                {
-                    !!images &&
-                    images.map((item, index) => {
-                        return (
-                            <Pressable
-                                key={index}
-                                style={{ width: 200, height: 200, flex: 1 }}
-
-                                onPress={() => editPhoto(item.uri)}
-                                // onLongPress={() => setModalDeleteVisible(!modalVisible)}
-                                onLongPress={(e) => handleModalDeleteEvent(item.uri)}
-
-                            >
-                                <Image
-                                    source={{ uri: item.uri }}
-                                    style={{ width: 200, height: 200, flex: 1, margin: 4, resizeMode: "center",
-                                }}
-                                />
-                            </Pressable>
-                        )
-                    })
-                }
-            </ScrollView>
-
+            {
+                !!images &&
+                <View styles={styles.containerGallery}>
+                    <FlatList
+                        data={images}
+                        renderItem={({ item }) => (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: 'column',
+                                    margin: 1
+                                }}>
+                                <Pressable
+                                    onPress={() => editPhoto(item.uri)}
+                                    onLongPress={(e) => handleModalDeleteEvent(item.uri)}
+                                >
+                                    <Image
+                                        style={styles.imageThumbnail}
+                                        source={{ uri: item.uri }}
+                                    />
+                                </Pressable>
+                            </View>
+                        )}
+                        //Setting the number of column
+                        numColumns={3}
+                        keyExtractor={(item, index) => index}
+                    />
+                </View>
+            }
         </View>
     )
 }
-export default Main
+export default Main;

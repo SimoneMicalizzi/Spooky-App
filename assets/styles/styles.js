@@ -2,12 +2,32 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
+        backgroundColor: '#ffffff'
+    },
+    buttonOpenCamera: {
+        // flex: 1,
+        // alignSelf: 'flex-end',
+        // alignItems: 'center',
+    },
+    textOpenCamera:{
+        color: 'black'
     },
     title: {
         fontFamily: 'SpookyFont',
         fontSize: 60,
-        color: '#FE5A0E'
+        color: '#FE5A0E',
+        padding: 16,
+    },
+    containerGallery: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#7cb48f',
+    },
+    imageThumbnail: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100,
     },
     animationContainer: {
         backgroundColor: '#fff',
@@ -23,13 +43,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
-          width: 0,
-          height: 2,
+            width: 0,
+            height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-      },
+    },
     input: {
         height: 40,
         margin: 12,
@@ -65,7 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'flex-end',
         alignItems: 'center',
-        zIndex: 222
+        // zIndex: 222
     },
     text: {
         fontSize: 18,
