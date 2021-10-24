@@ -74,6 +74,7 @@ class EditPhoto extends React.Component {
     };
 
     goBackToGallery = (uriPhoto) => {
+        console.log("Foto modificata che sto passando: ", uriPhoto)
         this.props.navigation.navigate('Main', {
             modifiedImagePath: uriPhoto
         })    
@@ -113,7 +114,6 @@ class EditPhoto extends React.Component {
                                         borderRadius: 100,
                                         backgroundColor: item
                                     }}>
-                                    <Text>{item}</Text>
                                 </TouchableOpacity>
                             )
                         })

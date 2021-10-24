@@ -24,10 +24,11 @@ const CameraComponent = (props) => {
     //Sistemare bottone chiudi --> Funziona
     //Aggiungere funzione per scattare la foto --> Funziona
     //Mostrare a video la foto per chiedere la conferma di salvataggio --> Funziona
-    //Salvare foto in galleria
-    //Eliminare -> ritorna alla fotocamera
-    //Mostrare a video in uno screen separato le foto scattate (local storage o galleria)
-    //Implementare modifiche sulla foto
+    //Salvare foto in galleria --> Funziona
+    //Eliminare -> ritorna alla fotocamera --> Funziona
+    //Mostrare a video in uno screen separato le foto scattate (local storage o galleria) --> Funziona
+    //Implementare modifiche sulla foto --> Funziona
+    
     //EXTRA: Aggiungere flash EXTRA
     //EXTRA: Aggiungere video 
 
